@@ -1,0 +1,119 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.37.0.
+--
+-- see: https://github.com/sol/hpack
+
+name:           aoc2024
+version:        0.1.0.0
+license:        BSD3
+build-type:     Simple
+
+library
+  exposed-modules:
+      Day01
+      Util
+  other-modules:
+      Paths_aoc2024
+  hs-source-dirs:
+      src/
+  default-extensions:
+      LambdaCase
+      FlexibleContexts
+      TemplateHaskell
+      TupleSections
+      ViewPatterns
+      MultiWayIf
+      QuasiQuotes
+      NamedFieldPuns
+      FlexibleInstances
+  ghc-options: -Wall -Wno-incomplete-patterns -Wno-unused-do-bind -Wno-missing-signatures -O2 -threaded -with-rtsopts=-N
+  build-depends:
+      JuicyPixels
+    , MemoTrie
+    , ansi-terminal
+    , arithmoi
+    , array
+    , base >=4.7 && <5
+    , bimap
+    , containers
+    , digits
+    , fgl
+    , fixed-vector
+    , gloss
+    , hashable
+    , lens
+    , linear
+    , massiv
+    , megaparsec
+    , memoize
+    , monad-loops
+    , mtl
+    , multiset
+    , parallel
+    , parser-combinators
+    , pqueue
+    , process
+    , random
+    , random-shuffle
+    , raw-strings-qq
+    , scanf
+    , split
+    , string-qq
+    , transformers
+    , unordered-containers
+    , vector
+  default-language: Haskell2010
+
+executable aoc2024
+  main-is: Main.hs
+  hs-source-dirs:
+      ./
+  default-extensions:
+      LambdaCase
+      FlexibleContexts
+      TemplateHaskell
+      TupleSections
+      ViewPatterns
+      MultiWayIf
+      QuasiQuotes
+      NamedFieldPuns
+      FlexibleInstances
+  ghc-options: -Wall -Wno-incomplete-patterns -Wno-unused-do-bind -Wno-missing-signatures -O2 -threaded -with-rtsopts=-N
+  build-depends:
+      JuicyPixels
+    , MemoTrie
+    , ansi-terminal
+    , aoc2024
+    , arithmoi
+    , array
+    , base >=4.7 && <5
+    , bimap
+    , containers
+    , digits
+    , fgl
+    , fixed-vector
+    , gloss
+    , hashable
+    , lens
+    , linear
+    , massiv
+    , megaparsec
+    , memoize
+    , monad-loops
+    , mtl
+    , multiset
+    , parallel
+    , parser-combinators
+    , pqueue
+    , process
+    , random
+    , random-shuffle
+    , raw-strings-qq
+    , scanf
+    , split
+    , string-qq
+    , transformers
+    , unordered-containers
+    , vector
+  default-language: Haskell2010

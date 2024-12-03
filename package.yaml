@@ -1,0 +1,73 @@
+name:                aoc2024
+version:             0.1.0.0
+license:             BSD3
+
+dependencies:
+- base >= 4.7 && < 5
+- random
+- containers
+- split
+- megaparsec
+- lens
+- mtl
+- JuicyPixels
+- vector
+- linear
+- gloss
+- fgl
+- array
+- scanf
+- digits
+- monad-loops
+- transformers
+- arithmoi
+- parser-combinators
+- fixed-vector
+- multiset
+- memoize
+- bimap
+- massiv
+- unordered-containers
+- pqueue
+- hashable
+- string-qq
+- ansi-terminal
+- random-shuffle
+- raw-strings-qq
+- MemoTrie
+# - glpk-hs
+- process
+- parallel
+
+ghc-options:
+- -Wall
+- -Wno-incomplete-patterns
+- -Wno-unused-do-bind
+- -Wno-missing-signatures
+- -O2
+- -threaded
+- -with-rtsopts=-N
+
+library:
+  source-dirs: src/
+
+default-extensions:
+- LambdaCase
+- FlexibleContexts
+- TemplateHaskell
+- TupleSections
+- ViewPatterns
+- MultiWayIf
+- QuasiQuotes
+- NamedFieldPuns
+- FlexibleInstances
+
+executables:
+  aoc2024:
+    main: Main.hs
+    source-dirs: ./
+    dependencies:
+    - aoc2024
+    when:
+      - condition: false
+        other-modules: Paths_aoc2024
