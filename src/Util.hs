@@ -30,6 +30,7 @@ module Util
     iterateUntil,
     traceVar,
     arrLookupWithDefault,
+    arrLookup,
     mkUniq,
     showAnimation,
     dijkstra,
@@ -41,7 +42,8 @@ module Util
     trim,
     whenM,
     makePairs,
-    iterateWithCycle
+    iterateWithCycle,
+    findCycle
   ) where
 
 import Codec.Picture
@@ -237,6 +239,11 @@ arrLookupWithDefault d arr p = if inRange (Arr.bounds arr) p
                      then arr Arr.! p
                      else d
 
+arrLookup :: Arr.Ix i => i -> Arr.Array i e -> Maybe e
+arrLookup p arr = if inRange (Arr.bounds arr) p
+                     then Just $ arr Arr.! p
+                     else Nothing
+
 mkUniq :: (Ord a) => [a] -> [a]
 mkUniq = map head . group . sort
 
@@ -273,3 +280,12 @@ iterateWithCycle num fun x0 = xf
                                                 Just last_ind -> (last_ind, ind)
                                                 Nothing -> go (Map.insert xi ind last_seen) rest
     xs = iterate fun x0
+
+findCycle :: Ord a => (a -> Maybe a) -> a -> Maybe a
+findCycle next start = go (Set.singleton start) start
+  where
+    go vis x = case next x of
+                    Nothing -> Nothing
+                    Just x' -> if Set.member x' vis
+                                  then Just x'
+                                  else go (Set.insert x' vis) x'
