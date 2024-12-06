@@ -4,5 +4,3 @@ import Day06
 
 main :: IO ()
 main = main06
-  
-
