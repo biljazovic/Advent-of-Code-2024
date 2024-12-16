@@ -43,7 +43,8 @@ module Util
     whenM,
     makePairs,
     iterateWithCycle,
-    findCycle
+    findCycle,
+    turnR, turnL,
   ) where
 
 import Codec.Picture
@@ -289,3 +290,12 @@ findCycle next start = go (Set.singleton start) start
                     Just x' -> if Set.member x' vis
                                   then Just x'
                                   else go (Set.insert x' vis) x'
+
+turnR :: V2 Int -> V2 Int
+turnR = \case
+  V2 (-1) 0    -> V2 0 1
+  V2 0 1       -> V2 1 0
+  V2 1 0       -> V2 0 (-1)
+  V2 0 (-1)    -> V2 (-1) 0
+
+turnL = turnR . turnR . turnR

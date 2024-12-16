@@ -6,13 +6,6 @@ import qualified Data.Set as Set
 import qualified Data.Array as Arr
 import Control.Parallel.Strategies (parMap, rdeepseq)
 
-turnR :: V2 Int -> V2 Int
-turnR = \case
-  V2 (-1) 0    -> V2 0 1
-  V2 0 1       -> V2 1 0
-  V2 1 0       -> V2 0 (-1)
-  V2 0 (-1)    -> V2 (-1) 0
-
 step :: CharMatrix -> (V2 Int, V2 Int) -> Maybe (V2 Int, V2 Int)
 step mat (x, dir) = 
   case arrLookup (x + dir) mat of
