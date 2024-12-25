@@ -28,6 +28,8 @@ library
       Day15
       Day16
       Day21
+      Day22
+      Day23
       Util
   other-modules:
       Paths_aoc2024
