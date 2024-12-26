@@ -2,8 +2,7 @@ module Day15 (main15) where
 
 import Util
 import Data.Maybe
-import Data.Array ( Array )
-import qualified Data.Array as Arr
+import qualified Data.Array.IArray as Arr
 import Data.Containers.ListUtils (nubOrd, nubOrdOn)
 
 toDir :: Char -> V2 Int
@@ -27,6 +26,7 @@ solveA mat moves = mat' & Arr.assocs & filter ((=='O') . snd) & map (fst >>> gps
     (mat', _) = foldl moveA (mat, x0) $ map toDir moves
     x0 = fst $ fromJust $ find ((=='@') . snd) $ Arr.assocs mat
 
+widen :: CharMatrix -> CharMatrix
 widen mat = Arr.array (V2 0 0, V2 n (2*m+1)) accs
   where
     (V2 0 0, V2 n m) = Arr.bounds mat

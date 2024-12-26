@@ -4,8 +4,7 @@ import Util
 import Data.Maybe
 import Data.Map (Map)
 import qualified Data.Map as Map
-import Data.Array ( Array )
-import qualified Data.Array as Arr
+import qualified Data.Array.IArray as Arr
 import Data.Char (isDigit)
 import qualified Data.PQueue.Prio.Min as PQ
 import Data.Hashable (Hashable)

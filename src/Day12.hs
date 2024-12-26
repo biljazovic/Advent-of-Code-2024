@@ -4,7 +4,7 @@ import Util
 import Data.Maybe
 import Data.Set (Set)
 import qualified Data.Set as Set
-import qualified Data.Array as Arr
+import qualified Data.Array.IArray as Arr
 
 dirs = [ V2 0 1, V2 1 0, V2 (-1) 0, V2 0 (-1) ]
 

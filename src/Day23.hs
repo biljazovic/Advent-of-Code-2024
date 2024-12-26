@@ -5,7 +5,7 @@ import Data.Maybe
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Array ( Array )
-import qualified Data.Array as Arr
+import qualified Data.Array.IArray as Arr
 import Data.Containers.ListUtils (nubOrd)
 import qualified Data.Array.Unboxed as UA
 import Data.Bits

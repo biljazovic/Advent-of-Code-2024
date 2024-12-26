@@ -2,7 +2,7 @@ module Day08 (main08) where
 
 import Util
 import qualified Data.Map as Map
-import qualified Data.Array as Arr
+import qualified Data.Array.IArray as Arr
 
 solve nodes mat =
   mat & Arr.assocs

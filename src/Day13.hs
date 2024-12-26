@@ -2,8 +2,7 @@ module Day13 (main13) where
 
 import Util
 import Data.Maybe (mapMaybe)
-import Data.Array ( Array )
-import qualified Data.Array as Arr
+import qualified Data.Array.IArray as Arr
 import Control.Exception (assert)
 import Text.Scanf
 

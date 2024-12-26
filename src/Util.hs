@@ -51,8 +51,10 @@ import Codec.Picture
     ( saveBmpImage, generateImage, DynamicImage(ImageRGB8), PixelRGB8(..) )
 import Control.Lens ( (^.) )
 import Control.Monad (guard, forM_)
-import Data.Array ( Ix(inRange), Array, array, listArray )
+import Data.Array.IArray (Ix(inRange))
+import qualified Data.Array.IArray as IA
 import qualified Data.Array as Arr
+import qualified Data.Array.Unboxed as UA
 import Data.Char (isSpace)
 import Data.Graph.Inductive.Graph ( Graph(mkGraph) )
 import Data.Graph.Inductive.PatriciaTree ( Gr )
@@ -95,12 +97,12 @@ parseInt :: ReadP Int
 parseInt = do
   read <$> ((++) <$> option "" (string "-") <*> ReadP.munch1 (`elem` ['0'..'9']))
 
-type CharMatrix = Array (V2 Int) Char
+type CharMatrix = UA.UArray (V2 Int) Char
 
 matrixToString :: CharMatrix -> String
-matrixToString mat = unlines [ [ mat Arr.! V2 i j | j <- [y1..y2] ] | i <- [x1..x2] ]
+matrixToString mat = unlines [ [ mat IA.! V2 i j | j <- [y1..y2] ] | i <- [x1..x2] ]
   where
-    (V2 x1 y1, V2 x2 y2) = Arr.bounds mat
+    (V2 x1 y1, V2 x2 y2) = IA.bounds mat
 
 parseMatrix :: String -> CharMatrix
 parseMatrix strToParse =
@@ -110,7 +112,7 @@ parseMatrix strToParse =
       n = length strs
       m = maximum $ map length strs
       lst = concat $ [[(V2 i j, ch) | (ch, j) <- zip str [0 ..]] | (str, i) <- zip strs' [0 ..]]
-   in array (V2 0 0, V2 (n -1) (m -1)) lst
+   in IA.array (V2 0 0, V2 (n -1) (m -1)) lst
 
 sepBy1_ :: MonadParsec e s m => m a -> m sep -> m [a]
 sepBy1_ p sep = (:) <$> try p <*> many (try (sep *> p))
@@ -202,8 +204,8 @@ generateGraph mapa = (mkGraph nodes edges, indexMap)
 emptyLine :: String -> Bool
 emptyLine = all isSpace
 
-listToArray :: [e] -> Array Int e
-listToArray lst = listArray (0, length lst - 1) lst
+listToArray :: [e] -> Arr.Array Int e
+listToArray lst = IA.listArray (0, length lst - 1) lst
 
 listCount :: (a -> Bool) -> [a] -> Int
 listCount f = length . filter f
@@ -235,14 +237,14 @@ iterateUntil stopCondition f start = let next = f start
 traceVar :: Show a => a -> a
 traceVar x = trace (show x) x
 
-arrLookupWithDefault :: Arr.Ix i => e -> Arr.Array i e -> i -> e
-arrLookupWithDefault d arr p = if inRange (Arr.bounds arr) p
-                     then arr Arr.! p
+arrLookupWithDefault :: (IA.IArray a e, IA.Ix i) => e -> a i e -> i -> e
+arrLookupWithDefault d arr p = if inRange (IA.bounds arr) p
+                     then arr IA.! p
                      else d
 
-arrLookup :: Arr.Ix i => i -> Arr.Array i e -> Maybe e
-arrLookup p arr = if inRange (Arr.bounds arr) p
-                     then Just $ arr Arr.! p
+arrLookup :: (IA.IArray a e, IA.Ix i) => i -> a i e -> Maybe e
+arrLookup p arr = if inRange (IA.bounds arr) p
+                     then Just $ arr IA.! p
                      else Nothing
 
 mkUniq :: (Ord a) => [a] -> [a]

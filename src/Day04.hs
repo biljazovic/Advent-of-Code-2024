@@ -1,7 +1,7 @@
 module Day04 (main04) where
 
 import Util
-import qualified Data.Array as Arr
+import qualified Data.Array.IArray as Arr
 
 isXMAS mat pos dir = (==) "XMAS"
   [ arrLookupWithDefault '\0' mat (pos + scale d dir) | d <- [0..3] ]

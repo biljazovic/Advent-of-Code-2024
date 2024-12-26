@@ -3,7 +3,7 @@ module Day06 (main06) where
 import Util
 import Data.Maybe (fromJust, isJust)
 import qualified Data.Set as Set
-import qualified Data.Array as Arr
+import qualified Data.Array.IArray as Arr
 import Control.Parallel.Strategies (parMap, rdeepseq)
 
 step :: CharMatrix -> (V2 Int, V2 Int) -> Maybe (V2 Int, V2 Int)

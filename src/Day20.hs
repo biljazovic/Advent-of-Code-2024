@@ -1,4 +1,4 @@
-module Day16 (main16) where
+module Day20 (main20) where
 
 import Util
 import Data.Maybe
@@ -7,16 +7,6 @@ import qualified Data.PQueue.Prio.Min as PQ
 import qualified Data.HashSet as HashSet
 import qualified Data.HashMap.Strict as HashMap
 import Data.Hashable (Hashable)
-
-neighs mat (p, dir) = [ ((p, turnR dir), 1000), ((p, turnL dir), 1000) ]
-                  ++ [ ((p + dir, dir), 1) | mat Arr.! (p+dir) /= '#' ]
-
-solveA mat = dijkstra
-    [ (p0, V2 0 1) ]
-    ((== 'E') . (mat Arr.!) . fst)
-    (neighs mat)
-  where
-    p0 = fst $ fromJust $ find ((== 'S') . snd) $ Arr.assocs mat
 
 astarDists :: (Eq a, Hashable a) => (a -> Int) -> [a] -> (a -> [(a, Int)]) -> HashMap.HashMap a Int
 astarDists heuristic start neigh = go HashSet.empty (HashMap.fromList $ map (, 0) start) (PQ.fromList $ map (0, ) start)
@@ -36,24 +26,30 @@ astarDists heuristic start neigh = go HashSet.empty (HashMap.fromList $ map (, 0
                            in go newSeen newDists newQ
       Nothing -> dists
 
-distsFrom :: CharMatrix -> [(V2 Int, V2 Int)] -> HashMap.HashMap (V2 Int, V2 Int) Int
-distsFrom mat src = mapa'
-  where
-    mapa' = astarDists (const 0) src (neighs mat)
+neighs mat x = map (, 1) $ filter ((/= '#') . (mat Arr.!)) $ susedi4 (Just $ Arr.bounds mat) x
 
-dirs = [ V2 0 1, V2 0 (-1), V2 1 0, V2 (-1) 0 ]
+distsFrom :: CharMatrix -> V2 Int -> HashMap.HashMap (V2 Int) Int
+distsFrom mat src = astarDists (const 0) [src] (neighs mat)
 
-solveB mat = listCount isOnShortestPath $ Arr.indices mat
+solve n mat = listCount (\d -> noCheatsDist - d >= 100) $ mapMaybe distCheat cheats
   where
-    isOnShortestPath p = mat Arr.! p /= '#' && f p == dist
-    f p = minimum $ [ mapaS HashMap.! (p, dir) + mapaE HashMap.! (p, turnR (turnR (dir))) | dir <- dirs ]
-    Just dist = solveA mat
-    mapaS = distsFrom mat [ (p0 'S', V2 0 1) ]
-    mapaE = distsFrom mat [ (p0 'E', dir) | dir <- dirs ]
+    mapaS = distsFrom mat (p0 'S')
+    mapaE = distsFrom mat (p0 'E')
     p0 ch = fst $ fromJust $ find ((== ch) . snd) $ Arr.assocs mat
+    noCheatsDist = mapaS HashMap.! (p0 'E')
+    cheats = concatMap (\p -> map (\(y, d) -> (p, y, d)) $ filter ((/= '#') . (arrLookupWithDefault '#' mat) . fst) $ hood p)
+                    $ map fst $ filter ((/= '#') . snd) $ Arr.assocs mat
+    hood p = [ (p + V2 i j, abs i + abs j)
+               | i <- [-n .. n]
+               , let s = n - abs (i)
+               , j <- [ -s .. s ] ]
+    distCheat (x1, x2, d) = do
+      d1 <- mapaS HashMap.!? x1
+      d2 <- mapaE HashMap.!? x2
+      return $ d1 + d + d2
 
-main16 :: IO ()
-main16 = do
-    input <- parseMatrix <$> readFile "res/input16"
-    print $ solveA input
-    print $ solveB input
+main20 :: IO ()
+main20 = do
+    input <- parseMatrix <$> readFile "res/input20"
+    print $ solve 2 input
+    print $ solve 20 input

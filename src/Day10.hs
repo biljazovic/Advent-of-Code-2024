@@ -5,8 +5,7 @@ import Data.Set (Set)
 import qualified Data.Set as Set
 import Data.Map (Map)
 import qualified Data.Map as Map
-import Data.Array ( Array )
-import qualified Data.Array as Arr
+import qualified Data.Array.IArray as Arr
 import qualified Data.Sequence as Seq
 
 solveA mat = sum $ map scoreOf $ map fst $ filter ((== '0') . snd) $ Arr.assocs mat
