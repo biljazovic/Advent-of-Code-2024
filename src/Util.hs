@@ -45,6 +45,7 @@ module Util
     iterateWithCycle,
     findCycle,
     turnR, turnL,
+    binarySearch,
   ) where
 
 import Codec.Picture
@@ -301,3 +302,11 @@ turnR = \case
   V2 0 (-1)    -> V2 (-1) 0
 
 turnL = turnR . turnR . turnR
+
+binarySearch :: Int -> Int -> (Int -> Bool) -> Int
+binarySearch lo hi p
+  | lo == hi = lo
+  | p mid     = binarySearch lo mid p
+  | otherwise = binarySearch (mid+1) hi p
+  where
+    mid = (lo + hi) `div` 2
